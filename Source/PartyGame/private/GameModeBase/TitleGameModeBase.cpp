@@ -40,7 +40,4 @@ void ATitleGameModeBase::BeginPlay()
 		}
 	}
 	
-
-	
-	
 }
