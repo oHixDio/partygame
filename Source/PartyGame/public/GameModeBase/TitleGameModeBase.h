@@ -6,6 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "TitleGameModeBase.generated.h"
 
+class UUserWidget;
+
 /**
  * 
  */
@@ -30,4 +32,12 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	bool bShouldJoinSPU = true;
+
+protected:
+	UPROPERTY(VisibleAnywhere)
+	UUserWidget* TitleWidget;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UUserWidget> TitleWidgetClass;
+
 };

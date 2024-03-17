@@ -3,6 +3,7 @@
 
 #include "GameModeBase/TitleGameModeBase.h"
 
+#include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
 
 ATitleGameModeBase::ATitleGameModeBase()
@@ -40,4 +41,10 @@ void ATitleGameModeBase::BeginPlay()
 		}
 	}
 	
+	
+	if (IsValid(TitleWidgetClass))
+	{
+		TitleWidget = CreateWidget(GetWorld(), TitleWidgetClass);
+		TitleWidget->AddToViewport();
+	}
 }
