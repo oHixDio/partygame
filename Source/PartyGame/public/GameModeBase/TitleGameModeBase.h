@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/GameModeBase.h"
+#include "GameModeBase/PartyGameGameMode.h"
 #include "TitleGameModeBase.generated.h"
 
 class UUserWidget;
@@ -12,7 +12,7 @@ class UUserWidget;
  * 
  */
 UCLASS()
-class PARTYGAME_API ATitleGameModeBase : public AGameModeBase
+class PARTYGAME_API ATitleGameModeBase : public APartyGameGameMode
 {
 	GENERATED_BODY()
 
@@ -21,9 +21,28 @@ public:
 
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, meta = (ClampMin = 1, ClampMax = 4))
-	int32 NumJoinPlayers = 2;
+	void StartGame();
+	void ExitGame();
+
+protected:
 	
+
+	UPROPERTY(EditAnywhere)
+	TSoftObjectPtr<UWorld> HomeLevel;
+
+	UPROPERTY(VisibleAnywhere)
+	UUserWidget* TitleWidget;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UUserWidget> TitleWidgetClass;
+
+};
+
+// PlayerCreate
+/*
+UPROPERTY(EditAnywhere, meta = (ClampMin = 1, ClampMax = 4))
+	int32 NumJoinPlayers = 2;
+
 	UPROPERTY(EditAnywhere, meta = (ClampMin = 1, ClampMax = 4))
 	int32 MaxAttendance = 4;
 
@@ -33,11 +52,29 @@ public:
 	UPROPERTY(EditAnywhere)
 	bool bShouldJoinSPU = true;
 
-protected:
-	UPROPERTY(VisibleAnywhere)
-	UUserWidget* TitleWidget;
+	if (MaxAttendance >= NumJoinPlayers)
+	{
+		int32 NumCreatePlayers = MaxAttendance - (MaxAttendance - NumJoinPlayers);
 
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<UUserWidget> TitleWidgetClass;
+		for (int32 i = 1; i < NumCreatePlayers; i++)
+		{
+			UGameplayStatics::CreatePlayer(GetWorld(), i);
+		}
+		int32 PlayerNum = GetNumPlayers();
 
-};
+		if (bShouldJoinSPU)
+		{
+			NumCPUs = MaxAttendance - NumJoinPlayers;
+		}
+
+		UE_LOG(LogTemp, Warning, TEXT("Player info Attendance:%d player:%d cpu:%d"), MaxAttendance, PlayerNum, NumCPUs);
+		for (int32 i = 0; i < PlayerNum; i++)
+		{
+			APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), i);
+			FString PlayerName = PlayerController->GetActorNameOrLabel();
+			UE_LOG(LogTemp, Warning, TEXT("Player name is %s"), *PlayerName);
+			int32 PlayerID = PlayerController->GetLocalPlayer()->GetControllerId();
+			UE_LOG(LogTemp, Warning, TEXT("Player ID is %d"), PlayerID);
+		}
+	}
+*/

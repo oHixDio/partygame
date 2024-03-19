@@ -6,6 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "PartyGameGameMode.generated.h"
 
+class UFadeComponent;
+
 UCLASS(minimalapi)
 class APartyGameGameMode : public AGameModeBase
 {
@@ -13,6 +15,13 @@ class APartyGameGameMode : public AGameModeBase
 
 public:
 	APartyGameGameMode();
+	virtual void BeginPlay() override;
+
+public:
+	void ChangeLevel();
+protected:
+	UPROPERTY(EditAnywhere)
+	UFadeComponent* FadeComponent;
 };
 
 
