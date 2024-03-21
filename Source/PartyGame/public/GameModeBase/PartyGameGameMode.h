@@ -20,20 +20,11 @@ struct FFadeSystem
 	UPROPERTY(EditAnywhere, Category = "FadeSystem", meta = (ClampMin = 0))
 	float FadeInTime;
 
-	UPROPERTY(EditAnywhere, Category = "FadeSystem")
-	bool bShoultFadeOut;
-
-	UPROPERTY(EditAnywhere, Category = "FadeSystem", meta = (ClampMin = 0))
-	float FadeOutTime;
-
 	UPROPERTY(VisibleAnywhere, Category = "FadeSystem")
 	UFadeWidget* FadeWidget;
 
 	UPROPERTY(EditAnywhere, Category = "FadeSystem")
 	TSubclassOf<UFadeWidget> FadeWidgetClass;
-
-	UPROPERTY(EditAnywhere)
-	TSoftObjectPtr<UWorld> LoadLevel;
 
 	UPROPERTY()
 	FTimerHandle ChangeLevelTimerHandle;
@@ -50,7 +41,7 @@ public:
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "GameMode | Core")
-	void ChangeLevel();
+	void ChangeLevel(TSoftObjectPtr<UWorld> LoadLevel, float FadeTime = 0.0f);
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "FadeSystem")

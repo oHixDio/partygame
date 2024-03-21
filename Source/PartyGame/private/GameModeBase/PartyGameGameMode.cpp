@@ -33,14 +33,14 @@ void APartyGameGameMode::BeginPlay()
 	}
 }
 
-void APartyGameGameMode::ChangeLevel()
+void APartyGameGameMode::ChangeLevel(TSoftObjectPtr<UWorld> LoadLevel, float FadeTime)
 {
 	if (FadeSystem.bShouldFadeIn)
 	{
 		if (IsValid(FadeSystem.FadeWidget))
 		{
 			FadeSystem.FadeWidget->AddToViewport(9000);
-			FadeSystem.FadeWidget->FadeOut(FadeSystem.FadeOutTime);
+			FadeSystem.FadeWidget->FadeOut(FadeTime);
 		}
 		else
 		{
@@ -48,31 +48,31 @@ void APartyGameGameMode::ChangeLevel()
 			{
 				FadeSystem.FadeWidget = CreateWidget<UFadeWidget>(GetWorld(), FadeSystem.FadeWidgetClass);
 				FadeSystem.FadeWidget->AddToViewport(9000);
-				FadeSystem.FadeWidget->FadeOut(FadeSystem.FadeOutTime);
+				FadeSystem.FadeWidget->FadeOut(FadeTime);
 			}
 		}
 		
 	}
 
-	if (UKismetSystemLibrary::IsValidSoftObjectReference(FadeSystem.LoadLevel))
+	if (UKismetSystemLibrary::IsValidSoftObjectReference(LoadLevel))
 	{
 		GetWorld()->GetTimerManager().ClearTimer(FadeSystem.ChangeLevelTimerHandle);
 
-		if (FadeSystem.FadeOutTime > 0)
+		if (FadeTime > 0)
 		{
 			GetWorld()->GetTimerManager().SetTimer
 			(
 				FadeSystem.ChangeLevelTimerHandle,
-				[this]() {
-					UGameplayStatics::OpenLevelBySoftObjectPtr(GetWorld(), FadeSystem.LoadLevel);
+				[this, LoadLevel]() {
+					UGameplayStatics::OpenLevelBySoftObjectPtr(GetWorld(), LoadLevel);
 				},
-				FadeSystem.FadeOutTime,
+				FadeTime,
 				false
 			);
 		}
 		else
 		{
-			UGameplayStatics::OpenLevelBySoftObjectPtr(GetWorld(), FadeSystem.LoadLevel);
+			UGameplayStatics::OpenLevelBySoftObjectPtr(GetWorld(), LoadLevel);
 		}
 	}
 }

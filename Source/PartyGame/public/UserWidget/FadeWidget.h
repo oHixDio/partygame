@@ -16,6 +16,7 @@ class PARTYGAME_API UFadeWidget : public UUserWidget
 
 public:
 
+
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void FadeIn(float FadeTime = 1.0f);
 
